@@ -68,11 +68,10 @@ def connect_sqlalchemy(credentials):
             DATABASE = credentials['RDS_DATABASE']
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
-            tables = engine.table_names()
-            print(tables)
-            engine.close()
+            
+            
 # %%
-connect_sqlalchemy(credentials)
 
+# %%
 # %%
 # %%
