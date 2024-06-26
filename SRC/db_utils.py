@@ -22,6 +22,9 @@ class RDSDatabaseConnector:
             DATABASE = credentials['RDS_DATABASE']
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
+            tables = engine.table_names()
+            print(tables)
+            engine.close()
 
 # %%
 # Read yaml credetial files    
@@ -44,7 +47,32 @@ def read_credentials(db_credentials_file_yaml):
 
 
 # %%
-credentials = read_credentials("")        
+credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")        
+# %%
+def connect_sqlalchemy(credentials):
+            from sqlalchemy import create_engine
+            """
+            This function:
+            initialises sql alchemy and connect it wiht the database in aws.
+            
+            Prameters:
+                credentials (dict):
+                    Python dictionary that contains the credetails to connact to a data base.
+            """
+            DATABASE_TYPE = 'postgresql'
+            DBAPI = 'psycopg2'
+            ENDPOINT = credentials['RDS_HOST']
+            USER = credentials['RDS_USER']
+            PASSWORD = credentials['RDS_PASSWORD']
+            PORT = credentials['RDS_PORT']
+            DATABASE = credentials['RDS_DATABASE']
+            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
+            engine.connect()
+            tables = engine.table_names()
+            print(tables)
+            engine.close()
 # %%
 connect_sqlalchemy(credentials)
+
+# %%
 # %%
