@@ -58,6 +58,7 @@ def init_sqlalchemy(credentials):
                     Python dictionary that contains the credetails to connact to a data base.
             """
             DATABASE_TYPE = 'postgresql'
+            DBAPI = 'psycopg2'
             ENDPOINT = credentials['RDS_HOST']
             USER = 'postgres'
             PASSWORD = credentials['RDS_PASSWORD']
@@ -67,7 +68,8 @@ def init_sqlalchemy(credentials):
             engine.connect()
 # %%
 credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")
-init_sqlalchemy(credentials)
-
+# init_sqlalchemy(credentials)
+# %%
+credentials
 #engine.close()
 # %%
