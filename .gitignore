@@ -155,7 +155,7 @@ dmypy.json
 cython_debug/
 
 # Credentials 
-/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/SRC/EDA_finance/SRC/credentials.yaml
+/EDA_finance/SRC/EDA_finance/SRC/credentials.yaml
 
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
