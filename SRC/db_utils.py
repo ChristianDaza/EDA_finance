@@ -1,6 +1,29 @@
 #%%
+import psycopg2
+from sqlalchemy import create_engine
 class RDSDatabaseConnector:
-    pass
+    def __init__(self, credentials):
+        self.credentials = credentials
+
+    def init_sqlalchemy(self, credentials):
+            """
+            This function:
+            initialises sql alchemy and connect it wiht the database in aws.
+            
+            Prameters:
+                credentials (dict):
+                    Python dictionary that contains the credetails to connact to a data base.
+            """
+            DATABASE_TYPE = 'postgresql'
+            DBAPI = 'psycopg2'
+            ENDPOINT = credentials['RDS_HOST']
+            USER = 'postgres'
+            PASSWORD = credentials['RDS_PASSWORD']
+            PORT = credentials['RDS_PORT']
+            DATABASE = credentials['RDS_DATABASE']
+            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
+            engine.connect()
+
 # %%
 # Read yaml credetial files    
 import yaml
