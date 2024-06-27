@@ -78,9 +78,10 @@ db_connect(credentials)
 
 # %%
 import pandas as pd
-def extract_data():
-      query = 'SELECT * FROM loan_payments'
-      df = pd.read_sql(query, engine)
+def extract_data(table_name):
+      table_name = input("Enter name of the desire table:").replace(" ", "")
+      df = pd.read_sql(table_name , engine.connect())
+      print(df.head(5))
      
 # %%
 # %%
