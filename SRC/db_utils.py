@@ -77,5 +77,10 @@ def db_connect(credentials):
 db_connect(credentials)
 
 # %%
+import pandas as pd
+def extract_data():
+      query = 'SELECT * FROM loan_payments'
+      df = pd.read_sql(query, engine)
+     
 # %%
 # %%
