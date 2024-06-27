@@ -30,6 +30,20 @@ class RDSDatabaseConnector:
             insp = inspect(engine)
             print(f"The connected database has the following tables: {insp.get_table_names()}")
         
+    def extract_data():
+        """
+        This function:
+            Extract the data from a user specify table from the connected database and saves it as a pandas dataframe.
+   
+        Returns: 
+            df (df):
+                Dataframe created from the user specify table from the connected database.
+        """
+        table_name = input("Enter name of the desire table:").replace(" ", "")
+        global df
+        df = pd.read_sql(table_name, engine.connect())
+        return df
+
     def save_data():
        """
         This function:
