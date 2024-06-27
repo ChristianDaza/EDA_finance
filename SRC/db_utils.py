@@ -21,10 +21,17 @@ class RDSDatabaseConnector:
             PASSWORD = credentials['RDS_PASSWORD']
             PORT = credentials['RDS_PORT']
             DATABASE = credentials['RDS_DATABASE']
+            global engine
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
             insp = inspect(engine)
             print(f"The connected database has the following tables: {insp.get_table_names()}")
+        
+    import pandas as pd
+    def extract_data(t):
+        table_name = input("Enter name of the desire table:").replace(" ", "")
+        df = pd.read_sql(table_name, engine.connect())
+        print(df.head(5))
 
 # %%
 # Read yaml credetial files    
@@ -67,6 +74,7 @@ def db_connect(credentials):
             PASSWORD = credentials['RDS_PASSWORD']
             PORT = credentials['RDS_PORT']
             DATABASE = credentials['RDS_DATABASE']
+            global engine
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
             insp = inspect(engine)
@@ -78,10 +86,15 @@ db_connect(credentials)
 
 # %%
 import pandas as pd
-def extract_data(table_name):
+def extract_data():
       table_name = input("Enter name of the desire table:").replace(" ", "")
-      df = pd.read_sql(table_name , engine.connect())
+      df = pd.read_sql(table_name, engine.connect())
       print(df.head(5))
      
 # %%
+extract_data()
+# %%
+print(engine)
+# %%
+print('hello')
 # %%
