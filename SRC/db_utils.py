@@ -1,11 +1,14 @@
 #%%
+from sqlalchemy import create_engine
+from sqlalchemy import inspect
+import pandas as pd
+
+#%%
 class RDSDatabaseConnector:
     def __init__(self, credentials):
         self.credentials = credentials
 
     def db_connect(credentials):
-            from sqlalchemy import create_engine
-            from sqlalchemy import inspect
             """
             This function:
             Connects  to data base in AWS and prints the names of all the tables of the database.
@@ -27,11 +30,17 @@ class RDSDatabaseConnector:
             insp = inspect(engine)
             print(f"The connected database has the following tables: {insp.get_table_names()}")
         
-
-    def extract_data():
-        table_name = input("Enter name of the desire table:").replace(" ", "")
-        df = pd.read_sql(table_name, engine.connect())
-        return df
+    def save_data():
+       """
+        This function:
+            Save the extravted data from the connected data base as a csv file in the user's machine, under the user specified filename.
+   
+        Returns: 
+            file (CSV):
+                Database data saved into a csv file.
+        """
+       name_data = input("Create a name for the file in which the data  will be saved: ").replace(" ", "")
+       df.to_csv(name_data, index=False)
 
 # %%
 # Read yaml credetial files    
