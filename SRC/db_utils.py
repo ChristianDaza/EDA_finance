@@ -1,64 +1,9 @@
 #%%
+import yaml
 from sqlalchemy import create_engine
 from sqlalchemy import inspect
 import pandas as pd
-
 #%%
-class RDSDatabaseConnector:
-    def __init__(self, credentials):
-        self.credentials = credentials
-
-    def db_connect(credentials):
-            """
-            This function:
-            Connects  to data base in AWS and prints the names of all the tables of the database.
-            
-            Prameters:
-                credentials (dict):
-                    Python dictionary that contains the credetails to connact to a data base.
-            """
-            DATABASE_TYPE = 'postgresql'
-            DBAPI = 'psycopg2'
-            ENDPOINT = credentials['RDS_HOST']
-            USER = credentials['RDS_USER']
-            PASSWORD = credentials['RDS_PASSWORD']
-            PORT = credentials['RDS_PORT']
-            DATABASE = credentials['RDS_DATABASE']
-            global engine
-            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
-            engine.connect()
-            insp = inspect(engine)
-            print(f"The connected database has the following tables: {insp.get_table_names()}")
-        
-    def extract_data():
-        """
-        This function:
-            Extract the data from a user specify table from the connected database and saves it as a pandas dataframe.
-   
-        Returns: 
-            df (df):
-                Dataframe created from the user specify table from the connected database.
-        """
-        table_name = input("Enter name of the desire table:").replace(" ", "")
-        global df
-        df = pd.read_sql(table_name, engine.connect())
-        return df
-
-    def save_data():
-       """
-        This function:
-            Save the extravted data from the connected data base as a csv file in the user's machine, under the user specified filename.
-   
-        Returns: 
-            file (CSV):
-                Database data saved into a csv file.
-        """
-       name_data = input("Create a name for the file in which the data  will be saved: ").replace(" ", "")
-       df.to_csv(name_data, index=False)
-
-# %%
-# Read yaml credetial files    
-import yaml
 def read_credentials(db_credentials_file_yaml):
     """
     This function:
@@ -67,60 +12,97 @@ def read_credentials(db_credentials_file_yaml):
         db_credentials_file (str): 
             Path to the yaml file with the credentilas to connact to a data base.
     Returns: 
-        redentials_dict (dict):
-            Python dictionary that contains the credetails to connact to a data base.
+        Credentials_dict (dict):
+            Python dictionary that contains the credentails to connact to a data base.
     """
     
     with open(db_credentials_file_yaml) as file:
         credentials_dict = yaml.safe_load(file)
     return credentials_dict
-      
-# %%
-def db_connect(credentials):
-            from sqlalchemy import create_engine
-            from sqlalchemy import inspect
+#%%
+class RDSDatabaseConnector:
+    """ 
+    Class that allow you to connect, select save and load data from the Amazon Relational Database Service (RDS).
+    
+    Parameter:
+        Credentials_dict (dict):
+            Python dictionary that contains the credentails to connact to a data base.
+
+    Attributes:
+        Credentials(dict): 
+            Python dictionary that contains the credentails to connact to a data base.
+        
+    
+    Methods:
+    db_connect():
+         Connects to the database in Amazon RDS and prints the names of all the tables of the database.
+    extract_data():
+        Allows the user to extract data from a specified table from the database in Amazon RDS.
+    save_data():
+        Allows the user to save the data from a specified table rom the database in Amazon RDS as a csv.
+    load_data():
+        Allows the user to load the previously data saved as a csv from save_data() into Python as a dataframe.
+    """
+    def __init__(self, credentials):
+        self.credentials = credentials
+
+    def db_connect(self):
             """
             This function:
-            Connects  to data base in AWS and prints the names of all the tables of the database.
+            Connects to data base in AWS and prints the names of all the tables of the database.
             
-            Prameters:
-                credentials (dict):
-                    Python dictionary that contains the credetails to connact to a data base.
+            Returns:
+                engine.connect():
+                    Initiates connection to the cloud database.
             """
             DATABASE_TYPE = 'postgresql'
             DBAPI = 'psycopg2'
-            ENDPOINT = credentials['RDS_HOST']
-            USER = credentials['RDS_USER']
-            PASSWORD = credentials['RDS_PASSWORD']
-            PORT = credentials['RDS_PORT']
-            DATABASE = credentials['RDS_DATABASE']
-            global engine
+            ENDPOINT = self.credentials['RDS_HOST']
+            USER = self.credentials['RDS_USER']
+            PASSWORD = self.credentials['RDS_PASSWORD']
+            PORT = self.credentials['RDS_PORT']
+            DATABASE = self.credentials['RDS_DATABASE']
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
             insp = inspect(engine)
             print(f"The connected database has the following tables: {insp.get_table_names()}")
-            
-            
+            return engine.connect()
+    
+    def extract_data(self):
+        """
+        This function:
+            Extract the data from a user specify table from the connected database and saves it as a pandas dataframe.
 
-# %%
-import pandas as pd
-def extract_data():
-      table_name = input("Enter name of the desire table:").replace(" ", "")
-      global df
-      df = pd.read_sql(table_name, engine.connect())
-      return df
-     
-# %%
-def save_data():
-       name_data = input("Create a name for the file in which the data  will be saved: ").replace(" ", "")
-       df.to_csv(name_data, index=False)
-
-      
-# %%
-credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")    
-db_connect(credentials)
-extract_data()
-save_data()
-# %%
-
-# %%
+        Returns: 
+            df (df):
+                Dataframe created from the user specify table from the connected database.
+        """
+        engine_connect = self.db_connect()
+        table_name = input("Enter name of the desire table:").replace(" ", "")
+        df = pd.read_sql(table_name, engine_connect)
+        return df
+    
+    def save_data(self):
+        """
+        This function:
+            Save the extracted data from the connected data base as a csv file in the user's machine, under the user specified filename.
+        
+        Returns
+            file (CSV):
+                Database data saved into a csv file.
+        """
+        name_data = input("Create a name for the file in which the data  will be saved: ").replace(" ", "")
+        df = self.extract_data()
+        df.to_csv(name_data, index=False)
+    
+    def load_data(self, data_file_path):
+      """
+      This function:
+            This function loads the saved data into Python.
+        
+        Returns
+            dataframe (df)):
+                Saved data laod into Pyhton as a dataframe.
+      """
+      df = pd.read_csv(data_file_path)
+      return df 
