@@ -3,11 +3,12 @@ class RDSDatabaseConnector:
     def __init__(self, credentials):
         self.credentials = credentials
 
-    def connect_sqlalchemy(credentials):
+    def db_connect(credentials):
             from sqlalchemy import create_engine
+            from sqlalchemy import inspect
             """
             This function:
-            initialises sql alchemy and connect it wiht the database in aws.
+            Connects  to data base in AWS and prints the names of all the tables of the database.
             
             Prameters:
                 credentials (dict):
@@ -22,9 +23,8 @@ class RDSDatabaseConnector:
             DATABASE = credentials['RDS_DATABASE']
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
-            tables = engine.table_names()
-            print(tables)
-            engine.close()
+            insp = inspect(engine)
+            print(f"The connected database has the following tables: {insp.get_table_names()}")
 
 # %%
 # Read yaml credetial files    
@@ -49,11 +49,12 @@ def read_credentials(db_credentials_file_yaml):
 # %%
 credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")        
 # %%
-def connect_sqlalchemy(credentials):
+def db_connect(credentials):
             from sqlalchemy import create_engine
+            from sqlalchemy import inspect
             """
             This function:
-            initialises sql alchemy and connect it wiht the database in aws.
+            Connects  to data base in AWS and prints the names of all the tables of the database.
             
             Prameters:
                 credentials (dict):
@@ -68,9 +69,12 @@ def connect_sqlalchemy(credentials):
             DATABASE = credentials['RDS_DATABASE']
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
+            insp = inspect(engine)
+            print(f"The connected database has the following tables: {insp.get_table_names()}")
             
             
 # %%
+db_connect(credentials)
 
 # %%
 # %%
