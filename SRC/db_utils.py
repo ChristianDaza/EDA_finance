@@ -27,11 +27,11 @@ class RDSDatabaseConnector:
             insp = inspect(engine)
             print(f"The connected database has the following tables: {insp.get_table_names()}")
         
-    import pandas as pd
-    def extract_data(t):
+
+    def extract_data():
         table_name = input("Enter name of the desire table:").replace(" ", "")
         df = pd.read_sql(table_name, engine.connect())
-        print(df.head(5))
+        return df
 
 # %%
 # Read yaml credetial files    
@@ -51,10 +51,7 @@ def read_credentials(db_credentials_file_yaml):
     with open(db_credentials_file_yaml) as file:
         credentials_dict = yaml.safe_load(file)
     return credentials_dict
-
-
-# %%
-credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")        
+      
 # %%
 def db_connect(credentials):
             from sqlalchemy import create_engine
@@ -81,20 +78,26 @@ def db_connect(credentials):
             print(f"The connected database has the following tables: {insp.get_table_names()}")
             
             
-# %%
-db_connect(credentials)
 
 # %%
 import pandas as pd
 def extract_data():
       table_name = input("Enter name of the desire table:").replace(" ", "")
+      global df
       df = pd.read_sql(table_name, engine.connect())
-      print(df.head(5))
+      return df
      
 # %%
+def save_data():
+       name_data = input("Create a name for the file in which the data  will be saved: ").replace(" ", "")
+       df.to_csv(name_data, index=False)
+
+      
+# %%
+credentials = read_credentials("/Users/ChAre/OneDrive/Desktop/aicore/EDA_finance/credentials.yaml")    
+db_connect(credentials)
 extract_data()
+save_data()
 # %%
-print(engine)
-# %%
-print('hello')
+
 # %%
