@@ -3,6 +3,7 @@ import pandas as pd
 df = pd.read_csv('./loan_payments')
 # %%
 # %%
+df_test= df
 df.info()
 # %%
 print(df['application_type'].unique())
@@ -22,3 +23,21 @@ print(df['application_type'].unique())
 # next_payment_date datetime
 # last_credit_pull_date datetime
 # application_type categoricaltidy data pyhton
+
+# %%
+# convert column data into category
+def category_convert(dataframe, column):
+    if type(column) is str:
+        dataframe[column] = dataframe[column].astype("category")
+    elif type(column) is list:
+        for col in column:
+            dataframe[col] = dataframe[col].astype("category")
+    return dataframe
+
+# %%
+df_cotegory_converted = category_convert(df_test, ["home_ownership", "verification_status", "loan_status"])
+# %%
+df_cotegory_converted.info()
+# %%
+print(type("hi"))
+# %%
