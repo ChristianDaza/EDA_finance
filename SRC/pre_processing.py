@@ -1,8 +1,4 @@
-#%%
-import pandas as pd
-df = pd.read_csv('./loan_payments')
-# %%
-# %%
+
 class DataTransform:
     """ 
     Helps the user transform the data types of columns on dataframes.
@@ -32,7 +28,7 @@ class DataTransform:
     def __init__(self, dataframe):
         self.dataframe = dataframe
 
-    def category_convert(self, dataframe, columns):
+    def category_convert(self, columns):
         """
         This function:
             Transforms specified dataframe column or columns into categorical data.
@@ -46,10 +42,10 @@ class DataTransform:
                 Dataframe wiht specified column or columns changed into categorical data.
         """
         for column in columns:
-            dataframe[column] = dataframe[column].astype("category")
-        return dataframe
+            self.dataframe[column] = self.dataframe[column].astype("category")
+        return self.dataframe
     
-    def date_convert(self, dataframe, columns):
+    def date_convert(self, columns):
         """ 
         This function:
             Transforms specified columns that contain dates in string form into date type data.
@@ -63,10 +59,10 @@ class DataTransform:
                 Dataframe with specified column or columns transformed into date type data.
         """
         for column in columns:
-            dataframe[column]= dataframe[column].apply(pd.to_datetime) 
-        return dataframe
+            self.dataframe[column]= self.dataframe[column].apply(pd.to_datetime) 
+        return self.dataframe
     
-    def date_format(self, dataframe, columns, format):
+    def date_format(self, columns, format):
         """ 
         This function:
             Formats data type dates in dataframe columns.
@@ -83,10 +79,10 @@ class DataTransform:
                 Dataframe with specified date type column or columns reformatted.
         """
         for column in columns:
-            dataframe[column]= dataframe[column].dt.strftime(format)
-        return dataframe
+            self.dataframe[column]= self.dataframe[column].dt.strftime(format)
+        return self.dataframe
     
-    def string_tranform(self, dataframe, columns):
+    def string_tranform(self, columns):
         """ 
         This function:
             Transforms the specified column or columns into the string data type.
@@ -100,10 +96,10 @@ class DataTransform:
                 Dataframe with the values in the specified column or columns transform into strings.
         """
         for column in columns:
-            dataframe[column] = dataframe[column].astype("string")
-        return dataframe
+            self.dataframe[column] = self.dataframe[column].astype("string")
+        return self.dataframe
     
-    def remove_characters(self, dataframe, column, characters):
+    def remove_characters(self, column, characters):
         """ 
         This function:
             Remove a charcter or characters from the specified dataframe column.
@@ -119,10 +115,10 @@ class DataTransform:
                 Dataframe with the specified characters removed.
         """
         for character in characters:
-            dataframe[column] = dataframe[column].str.replace(character, "")
-        return dataframe
+            self.dataframe[column] = self.dataframe[column].str.replace(character, "")
+        return self.dataframe
         
-    def rename_column(self, dataframe, old_column_name, new_column_name):
+    def rename_column(self, old_column_name, new_column_name):
         """ 
         This function:
             Changes the name of a specified column.
@@ -139,12 +135,5 @@ class DataTransform:
             dataframe (df):
                 Dataframe with the columns new name.
         """
-        dataframe.rename(columns = {old_column_name:new_column_name}, inplace = True)
-        return dataframe
-# %%
-data_transformer = DataTransform(df)
-# %%
-df_category = data_transformer.category_convert(df, ["grade"])
-# %%
-df_category.info()
-# %%
+        self.dataframe.rename(columns = {old_column_name:new_column_name}, inplace = True)
+        return self.dataframe
