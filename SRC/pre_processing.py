@@ -4,6 +4,7 @@ df = pd.read_csv('./loan_payments')
 # %%
 # %%
 df_test= df
+df_test_2= df
 df.info()
 # %%
 print(df['application_type'].unique())
@@ -26,18 +27,28 @@ print(df['application_type'].unique())
 
 # %%
 # convert column data into category
-def category_convert(dataframe, column):
-    if type(column) is str:
+def category_convert(dataframe, columns):
+    """
+    This function:
+        Transforms specified dataframe column or columns into categorical data.
+    Prameters:
+        dataframe(df): 
+            Dataframe with the desired colum or columns to transform into categorical data.
+        columns (list): 
+            List of name or names of columns to change into catgorical data.
+    Returns: 
+        dataframe:
+            Dataframe wiht specified column or columns changed into categorical data.
+    """
+    for column in columns:
         dataframe[column] = dataframe[column].astype("category")
-    elif type(column) is list:
-        for col in column:
-            dataframe[col] = dataframe[col].astype("category")
     return dataframe
 
 # %%
-df_cotegory_converted = category_convert(df_test, ["home_ownership", "verification_status", "loan_status"])
+type(df['application_type'])
 # %%
-df_cotegory_converted.info()
+
 # %%
-print(type("hi"))
+
+# %%
 # %%
