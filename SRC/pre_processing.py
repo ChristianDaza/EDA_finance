@@ -38,7 +38,7 @@ def category_convert(dataframe, columns):
         columns (list): 
             List of name or names as strings of columns to change into catgorical data.
     Returns: 
-        dataframe:
+        dataframe (df):
             Dataframe wiht specified column or columns changed into categorical data.
     """
     for column in columns:
@@ -56,8 +56,8 @@ def date_convert(dataframe, columns):
         columns (list): 
             List of name or names of columns to change into date type data.
     Returns: 
-        dataframe:
-            Dataframe with specified column or columns changed into date type data.
+        dataframe (df):
+            Dataframe with specified column or columns transformed into date type data.
     """
     for column in columns:
         dataframe[column]= dataframe[column].apply(pd.to_datetime) 
@@ -77,7 +77,7 @@ def date_format(dataframe, columns, format):
                 String specifying the format the user what the date type columns to changed into following datatime module symbols.
                 %Y (year), %m (month), %d(day): one or all symbols ordered wihthin the same string with or without a delimiter between them.
         Returns: 
-            dataframe:
+            dataframe (df):
                 Dataframe with specified date type column or columns reformatted.
         """
         for column in columns:
@@ -85,14 +85,65 @@ def date_format(dataframe, columns, format):
         return dataframe
 
 # %%
-c = date_convert(df_test, ["issue_date", "last_payment_date", "next_payment_date"], "%m-%Y")
+
 # %%
-df_dt = date_format(df_test, ["issue_date", "last_payment_date", "next_payment_date"], "%m-%Y")
+df['employment_length']
+
 # %%
+df2 = df['employment_length'].str.replace("year", "")
+# %%
+def string_tranform(dataframe, columns):
+    """ 
+    This function:
+        Transforms the specified column or columns into the string data type.
+    Prameters:
+        dataframe(df): 
+            Dataframe with the desired date types colum or columns to format.
+        columns (list): 
+            List of column name or names to format.
+    Returns: 
+        dataframe (df):
+            Dataframe with the values in the specified column or columns transform into strings.
+    """
+    for column in columns:
+        dataframe[column] = dataframe[column].astype("string")
+    return dataframe
+     
+
+# %%
+def remove_character(dataframe, column, characters):
+    """ 
+    This function:
+        Remove a charcter or characters from the specified dataframe column.
+    Prameters:
+        dataframe (df): 
+            Dataframe with the desired colum or columns to transform into date type data.
+        columns (str): 
+            Name of column from which the characters are going to be removed.
+        Character (str):
+            Charcters to removed from the specified dataframe column.
+    Returns: 
+        dataframe (df):
+            Dataframe with the specified characters removed.
+    """
+    for character in characters:
+        dataframe[column] = dataframe[column].str.replace(character, "")
+    return dataframe
+     
+#%%
+
+# %%
+df = pd.read_csv('./loan_payments')
+# %%
+
+
+# %%
+``
 # %%
 
 # %%
 
+# %%
 
 # %%
 
