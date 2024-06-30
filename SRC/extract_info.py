@@ -4,19 +4,16 @@ import numpy as np
 import pre_processing as pp
 df = pd.read_csv("./loan_payments")
 #%%
+# Preprocess original df
 pre_pro = pp.DataTransform(df)
-pre_pro.category_convert(["grade", "sub_grade", "home_ownership", "verification_status", "loan_status", "payment_plan", "purpose", "application_type", "employment_length"])
-#%%
-pre_pro.date_convert(["issue_date", "earliest_credit_line", "last_payment_date", "next_payment_date", "last_credit_pull_date"])
-#%%
-pre_pro.string_tranform(["employment_length", "term"])
+pre_pro.category_transform(["grade", "sub_grade", "home_ownership", "verification_status", "loan_status", "payment_plan", "purpose", "application_type", "employment_length"])
+pre_pro.date_transform(["issue_date", "earliest_credit_line", "last_payment_date", "next_payment_date", "last_credit_pull_date"])
+pre_pro.string_transform(["employment_length", "term"])
 pre_pro.remove_characters("employment_length", ["years", "year"])
-pre_pro.remove_characters("term", ["years", "months"])
-pre_pro.num_transform([], [])
+pre_pro.remove_characters("term", ["months"])
 pre_pro.rename_column("employment_length", "years_of_employment")
 pre_pro.rename_column("term", "term_in_months")
-#%%
-pre_pro.dataframe["years_of_employment"].value_counts()
+pre_pro.numeric_transform(["term_in_months"])
 # %%
 class DataFrameInfo:
     def __init__(self, dataframe):
