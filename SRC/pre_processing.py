@@ -98,6 +98,22 @@ class DataTransform:
         for column in columns:
             self.dataframe[column] = self.dataframe[column].astype("string")
         return self.dataframe
+    def string_tranform(self, columns, numeric_type):
+        """ 
+        This function:
+            Transforms the specified column or columns into the numeric data type.
+        Prameters:
+            dataframe(df): 
+                Dataframe with the desired column to chnage the data type.
+            columns (list): 
+                List of column name or names to format.
+        Returns: 
+            dataframe (df):
+                Dataframe with the values in the specified column or columns transform into numeric data type.
+        """
+        for column in columns:
+            self.dataframe[column] = self.dataframe[column].astype(numeric_type)
+        return self.dataframe
     
     def remove_characters(self, column, characters):
         """ 
