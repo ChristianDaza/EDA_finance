@@ -21,6 +21,8 @@ class DataTransform:
         Transforms the specified column or columns into the string data type.
     string_tranform:
         Transforms the specified column or columns into the string data type.
+    numeric_tranform:
+        Transforms the specified column or columns into the numeric data type.
     remove_characters:
         Remove a charcter or characters from the specified dataframe column.
     rename_column:
@@ -99,7 +101,8 @@ class DataTransform:
         for column in columns:
             self.dataframe[column] = self.dataframe[column].astype("string")
         return self.dataframe
-    def string_tranform(self, columns, numeric_type):
+    
+    def numeric_tranform(self, columns, numeric_type):
         """ 
         This function:
             Transforms the specified column or columns into the numeric data type.
