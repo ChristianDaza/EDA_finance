@@ -1,19 +1,6 @@
 #%%
 import pandas as pd 
 import numpy as np
-import pre_processing as pp
-df = pd.read_csv("./loan_payments")
-#%%
-# Preprocess original df
-pre_pro = pp.DataTransform(df)
-pre_pro.category_transform(["grade", "sub_grade", "home_ownership", "verification_status", "loan_status", "payment_plan", "purpose", "application_type", "employment_length"])
-pre_pro.date_transform(["issue_date", "earliest_credit_line", "last_payment_date", "next_payment_date", "last_credit_pull_date"])
-pre_pro.string_transform(["employment_length", "term"])
-pre_pro.remove_characters("employment_length", ["years", "year"])
-pre_pro.remove_characters("term", ["months"])
-pre_pro.rename_column("employment_length", "years_of_employment")
-pre_pro.rename_column("term", "term_in_months")
-pre_pro.numeric_transform(["term_in_months"])
 # %%
 class DataFrameInfo:
     def __init__(self, dataframe):
@@ -78,23 +65,11 @@ class DataFrameInfo:
                 unique_values = self.dataframe[column].value_counts()
                 number_uniques = len(unique_values)
                 print(f"{unique_values} \nTotal numer of unique values: {number_uniques} \n")
- #%%
-df_info = DataFrameInfo(pre_pro.dataframe)
 
-#%%
-df_info.unique_valus_count()
-
-        
-
-        
-
-        
-# %%
-#Count distinct values in categorical columns 
-
-unique_value_count(df)
-#%%
-#Generate a count/percentage count of NULL values in each column
-type
-# %%
-#Any other methods you may find useful 
+    def data_shape(self):
+        """
+        This function:
+                    Displays the number of rows and columsn of a dataframe.
+        """
+        d_shape = self.dataframe.shape
+        print(f"Rows: {d_shape[0]} \nColumns: {d_shape[1]}")
