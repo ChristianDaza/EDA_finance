@@ -34,34 +34,67 @@ class DataFrameInfo:
         """
         columns_types = self.dataframe.dtypes
         return columns_types
+    
+    def descriptive_stats(self, exclude_columns = []):
+        """
+        This function:
+            Calculates the mean, median and standard deviation of datafraem columns wiht data type float64 or int64.
+            It also allows the user to eliminate dataframe columsn before the descriptive statistics are run.
+
+        Prameters:
+            exclude_columns (list):
+                List of column names the user want to remove before runnign the descriptive statistics.
+        """
+        if len(exclude_columns) > 0:
+            # Delete undesired columns 
+            exclude_columns = ["id", "member_id"]
+            for column in exclude_columns:
+                df_clean = self.dataframe.drop(exclude_columns, axis=1)
+
+            # Compute descriptive statistics
+            for column in df_clean:
+                if  df_clean[column].dtype == "float64" or  df_clean[column].dtype == "int64":
+                    mean = round( df_clean[column].mean(axis=0), 2)
+                    median = round(df_clean[column].median(), 2)
+                    standard_deviation = round( df_clean[column].std(), 2)
+                    print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation:{standard_deviation}")
+        
+        else:
+            # Compute descriptive statistics
+            for column in self.dataframe:
+                if  self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
+                    mean = round(self.dataframe[column].mean(axis=0), 2)
+                    median = round(self.dataframe[column].median(), 2)
+                    standard_deviation = round(self.dataframe[column].std(), 2)
+                    print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
+            
+    def unique_valus_count(self):
+        """
+        This function:
+                Displays the total number of unqiues values and the count of each unique values within categorical data type columns.
+        """
+        for column in self.dataframe:
+            if self.dataframe[column].dtype == "category":
+                unique_values = self.dataframe[column].value_counts()
+                number_uniques = len(unique_values)
+                print(f"{unique_values} \nTotal numer of unique values: {number_uniques} \n")
+ #%%
+df_info = DataFrameInfo(pre_pro.dataframe)
 
 #%%
-de = DataFrameInfo(df)
+df_info.unique_valus_count()
 
-# %%
-#Extract statistical values: median, standard deviation and mean from the columns and the DataFrame
-def descritive_stats(dataframe):
-    #for column in ignore_columns:
-        #df_clean = dataframe.drop(column, axis =1)
-        #print(df_clean.info())
-    for column in dataframe:
-        if  dataframe[column].dtype == "float64" or "int64":
-            mean = dataframe[column].mean
-            median =  dataframe[column].median()
-            standard_deviation =dataframe[column].std()
-        return print(f"{column}: \n mean:{mean}  \n median:{median} \n stadard_deviation:{standard_deviation}")
+        
+
+        
+
+        
 # %%
 #Count distinct values in categorical columns 
-descritive_stats(df)
 
-# %%
-#Print out the shape of the DataFrame
-
-for column in df:
-        if df[column].dtype == "float64" or "int64":
-            print(df[column].std())
-# %%
+unique_value_count(df)
+#%%
 #Generate a count/percentage count of NULL values in each column
-df.info()
+type
 # %%
 #Any other methods you may find useful 
