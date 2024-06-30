@@ -1,6 +1,7 @@
 #%%
 import pandas as pd 
 import numpy as np
+df= pd.read_csv("./loan_payments")
 # %%
 class DataFrameInfo:
     """ 
@@ -23,6 +24,8 @@ class DataFrameInfo:
         Displays the total number of unqiues values and the count of each unique values within categorical data type columns.
     data_shape:
         Displays the number of rows and columsn of a dataframe.
+    count_null:
+        Calculates the number or percentage of nulls for each column of the dataframe.
     """
 
     def __init__(self, dataframe):
@@ -96,3 +99,20 @@ class DataFrameInfo:
         """
         d_shape = self.dataframe.shape
         print(f"Rows: {d_shape[0]} \nColumns: {d_shape[1]}")
+
+    def count_null(self, percentage = "n"):
+        """
+        This function:
+            Calculates the number or percentage of nulls for each column of the dataframe.
+
+        Prameters:
+            percentage (str):
+                If the paremeter value is "y" calculates percentage of nulls in each column of the dataframe.
+        """
+
+        if percentage == "y":
+            null_percentage = self.dataframe.isnull().sum()/len(df)*100
+            print(null_percentage)
+        else:
+            null_count =  self.dataframe.isnull().sum()
+            print(null_count)
