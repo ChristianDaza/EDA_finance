@@ -3,8 +3,31 @@ import pandas as pd
 import numpy as np
 # %%
 class DataFrameInfo:
+    """ 
+    Allows the user to extrcat useful information from the dataframe.
+    
+    Parameters:
+        dataframe (df): 
+            Dataframe which the users need to transform.
+
+    Attributes:
+        dataframe (df): 
+            Dataframe which the users need to transform..
+
+    Methods:
+    check_columns_type:
+        Checks and displays the data types of all the columns of a specified dataframe.
+    descriptive_stats:
+         Calculates the mean, median and standard deviation of datafraem columns wiht data type float64 or int64.
+    unique_valus_count:
+        Displays the total number of unqiues values and the count of each unique values within categorical data type columns.
+    data_shape:
+        Displays the number of rows and columsn of a dataframe.
+    """
+
     def __init__(self, dataframe):
         self.dataframe = dataframe
+
 
     def check_columns_type(self):
         """
