@@ -100,7 +100,7 @@ class DataFrameInfo:
         d_shape = self.dataframe.shape
         print(f"Rows: {d_shape[0]} \nColumns: {d_shape[1]}")
 
-    def count_null(self, percentage = False, individual_total= False):
+    def count_null(self, percentage = False, individual_total = False):
         """
         This function:
             Calculates the number or percentage of nulls for each column of the dataframe.
