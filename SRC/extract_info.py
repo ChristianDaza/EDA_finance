@@ -68,29 +68,28 @@ class DataFrameInfo:
             # Compute descriptive statistics
             for column in df_clean:
                 if  df_clean[column].dtype == "float64" or  df_clean[column].dtype == "int64" or df_clean[column].dtype == '<M8[ns]':
-                    mean = round( df_clean[column].mean(axis=0), 2)
-                    median = round(df_clean[column].median(), 2)
-                    standard_deviation = round( df_clean[column].std(), 2)
+                    mean = df_clean[column].mean(axis=0)
+                    median = df_clean[column].median()
+                    standard_deviation = df_clean[column].std()
                     print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation:{standard_deviation}")
         
         elif len(exclude_columns) == 0 and len(selected_column) == 0:
                 # Compute descriptive statistics
                 for column in self.dataframe:
-                    if  self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or df_clean[column].dtype == '<M8[ns]':
-                        mean = round(self.dataframe[column].mean(axis=0), 2)
-                        median = round(self.dataframe[column].median(), 2)
-                        standard_deviation = round(self.dataframe[column].std(), 2)
+                    if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or self.dataframe[column].dtype == '<M8[ns]':
+                        mean = self.dataframe[column].mean(axis=0)
+                        median = self.dataframe[column].median()
+                        standard_deviation = self.dataframe[column].std()
                         print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
         
         elif len(exclude_columns) == 0 and len(selected_column) > 0:
-                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or df_clean[column].dtype == '<M8[ns]':
-                    mean = self.dataframe["last_payment_date"].mean(axis=0)
-                    median = self.dataframe["last_payment_date"].median()
-                    standard_deviation = self.dataframe["last_payment_date"].std()
-                    print(f"\n \n{selected_column}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
+                for columns in selected_column:
+                    if self.dataframe[columns].dtype == "float64" or self.dataframe[columns].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
+                        mean = self.dataframe[columns].mean(axis=0)
+                        median = self.dataframe[columns].median()
+                        standard_deviation = self.dataframe[columns].std()
+                        print(f"\n \n{columns}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
         
-
-            
 
             
     def unique_valus_count(self):
