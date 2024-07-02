@@ -171,3 +171,25 @@ class DataTransform:
         """
         self.dataframe.rename(columns = {old_column_name:new_column_name}, inplace = True)
         return self.dataframe
+    
+    def replace_null(self, column, value):
+        """
+        This function:
+                Replaces null values on a specified column of a dataframe.
+            
+            Prameters:
+                columns (list): 
+                    Column which have null values.
+                Value (str, num):
+                    Value to substitute the null values in the column.
+            
+            Returns: 
+                dataframe (df):
+                    Dataframe with with the null values replaced.
+        """
+
+        if self.dataframe[column].isnull().sum() > 0:
+            self.dataframe[column] = self.dataframe[column].fillna(value)
+            return self.dataframe 
+        else:
+            raise ValueError(f"No null found in the {column} column, please choose another column.")
