@@ -1,5 +1,7 @@
+#%%
 import pandas as pd
 
+#%%
 class DataTransform:
     """ 
     Helps the user transform the data types of columns on dataframes.
@@ -193,3 +195,23 @@ class DataTransform:
             return self.dataframe 
         else:
             raise ValueError(f"No null found in the {column} column, please choose another column.")
+        
+    def remove_columns(self, columns):
+            """
+            This function:
+                    remove selected column or columns by the user.
+                
+                Prameters:
+                    column (str): 
+                        Name of the column or columns to remove from the dataframe.
+                
+            Returns: 
+                dataframe (df):
+                    Dataframe with with the removed column or columns.
+            """
+            
+            self.dataframe = self.dataframe.drop(columns, axis = 1)
+            return self.dataframe 
+           
+
+# %%
