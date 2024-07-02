@@ -80,6 +80,8 @@ class DataFrameInfo:
                     median = round(self.dataframe[column].median(), 2)
                     standard_deviation = round(self.dataframe[column].std(), 2)
                     print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
+        
+
             
     def unique_valus_count(self):
         """
