@@ -134,3 +134,30 @@ class DataFrameInfo:
         else:
             null_count =  self.dataframe.isnull().sum()
             print(null_count)
+
+    def skew_check (self, columns = []):
+        """
+        This function:
+            Calculates the skewness for all numeric and date type columns in the chosen dataframe.
+
+        Prameters:
+            Columns(list):
+                List of column or columns to cbe checked for skewness.
+        """
+
+        # Calculate skewness for all numeric and date type column in the dataframe
+        if len(columns) == 0:
+            for column in self.dataframe:
+                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
+                    column_skewness = round(self.dataframe[column].skew(), 2)
+                    if column_skewness >= 0.5:
+                        print(f"\n {column}: \n skewness:{column_skewness} \n")
+    
+        
+        # Calculate skewness only for the specified column or columns
+        if len(columns) > 0:
+            for column in columns:
+                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
+                    column_skewness = round(self.dataframe[column].skew(), 2)
+                    if column_skewness >= 0.5:
+                        print(f"\n {column}: \n skewness:{column_skewness} \n")
