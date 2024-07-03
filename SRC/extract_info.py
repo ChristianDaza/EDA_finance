@@ -1,6 +1,7 @@
 #%%
 import pandas as pd 
 import numpy as np
+from scipy.stats import normaltest
 df= pd.read_csv("./loan_payments")
 # %%
 class DataFrameInfo:
@@ -26,6 +27,11 @@ class DataFrameInfo:
         Displays the number of rows and columsn of a dataframe.
     count_null:
         Calculates the number or percentage of nulls for each column of the dataframe.
+    norm_test:
+        Calculates the the normality statistic for a chosen column.
+    skew_check:
+        Calculates the skewness for all numeric and date type columns in the chosen dataframe.
+
     """
 
     def __init__(self, dataframe):
@@ -135,20 +141,37 @@ class DataFrameInfo:
             null_count =  self.dataframe.isnull().sum()
             print(null_count)
 
-    def skew_check (self, columns = []):
+    
+    def norm_test(self, column):
+        """
+        This function:
+            Calculates the the normality statistic for a chosen column.
+
+        Prameters:
+            Columns(str):
+                Name of the column to test for normality.
+            
+        """
+        data = self.dataframe[column]
+        stat, p = normaltest(data, nan_policy='omit')
+        print('Statistics=%.3f, p=%.3f' % (stat, p))
+
+    def skew_check(self, columns = [], cutoff = 0.5):
         """
         This function:
             Calculates the skewness for all numeric and date type columns in the chosen dataframe.
 
         Prameters:
             Columns(list):
-                List of column or columns to cbe checked for skewness.
+                List of column or columns to be checked for skewness.
+            cutoff(int):
+                Only values bigger than or equal to cuttoff will be return.
         """
 
         # Calculate skewness for all numeric and date type column in the dataframe
         if len(columns) == 0:
             for column in self.dataframe:
-                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
+                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= 0.5:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
@@ -157,7 +180,7 @@ class DataFrameInfo:
         # Calculate skewness only for the specified column or columns
         if len(columns) > 0:
             for column in columns:
-                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
+                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
                     column_skewness = round(self.dataframe[column].skew(), 2)
-                    if column_skewness >= 0.5:
+                    if column_skewness >= cutoff:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
