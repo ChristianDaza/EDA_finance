@@ -1,8 +1,6 @@
 #%%
 import pandas as pd 
-import numpy as np
 from scipy.stats import normaltest
-df= pd.read_csv("./loan_payments")
 # %%
 class DataFrameInfo:
     """ 
@@ -130,7 +128,7 @@ class DataFrameInfo:
         """
 
         if percentage == True:
-            null_percentage = self.dataframe.isnull().sum()/len(df)*100
+            null_percentage = self.dataframe.isnull().sum()/len(self.dataframe)*100
             print(null_percentage)
 
         elif individual_total == True:
@@ -171,7 +169,7 @@ class DataFrameInfo:
         # Calculate skewness for all numeric and date type column in the dataframe
         if len(columns) == 0:
             for column in self.dataframe:
-                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
+                if self.dataframe[column].dtypes == "float64" or  self.dataframe[column].dtypes == "int64" or self.dataframe[columns].dtypes == '<M8[ns]':
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= 0.5:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
@@ -180,7 +178,10 @@ class DataFrameInfo:
         # Calculate skewness only for the specified column or columns
         if len(columns) > 0:
             for column in columns:
-                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
+                if self.dataframe[column].dtypes == "float64" or  self.dataframe[column].dtypes == "int64" or self.dataframe[columns].dtypes == '<M8[ns]':
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= cutoff:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
+
+   
+

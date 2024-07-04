@@ -1,7 +1,8 @@
-#%%
-import pandas as pd
 
-#%%
+import pandas as pd
+from scipy import stats
+import numpy as np
+
 class DataTransform:
     """ 
     Helps the user transform the data types of columns on dataframes.
@@ -197,21 +198,57 @@ class DataTransform:
             raise ValueError(f"No null found in the {column} column, please choose another column.")
         
     def remove_columns(self, columns):
-            """
-            This function:
-                    remove selected column or columns by the user.
-                
-                Prameters:
-                    column (str): 
-                        Name of the column or columns to remove from the dataframe.
-                
-            Returns: 
-                dataframe (df):
-                    Dataframe with with the removed column or columns.
-            """
+        """
+        This function:
+                remove selected column or columns by the user.
             
-            self.dataframe = self.dataframe.drop(columns, axis = 1)
-            return self.dataframe 
-           
+            Prameters:
+                column (str): 
+                    Name of the column or columns to remove from the dataframe.
+            
+        Returns: 
+            dataframe (df):
+                Dataframe with with the removed column or columns.
+        """
+        
+        self.dataframe = self.dataframe.drop(columns, axis = 1)
+        return self.dataframe 
+    
+    def skew_transform(self, dataframe, transformation):
+        """
+        This function:
+            Calculates the skewness for all numeric and date type columns in the chosen dataframe.
 
+        Prameters:
+            Columns (str):
+                Name of the column with the values to be transformed.
+            Tranformation (str):
+                Specifies the type of transformation: log, BC(Box-Cox) and YJ(Yeo-Johnson).
+        """
+        
+
+        if transformation == "log":
+            log_transform = dataframe.apply(np.log, axis=1)
+            return log_transform
+        
+
+        elif transformation == "BC":
+            BC_transform = stats.boxcox(dataframe)
+            BC_transform = round(pd.Series(BC_transform[0]), 2)
+            return BC_transform
+    
+        elif transformation == "YJ":
+            BY_transform = stats.yeojohnson(dataframe)
+            BY_transform = round(pd.Series(BY_transform[0]))
+            return BY_transform 
+        
+        elif transformation == "all":
+            log_transform = dataframe.apply(np.log, axis=1)
+            BC_transform = stats.boxcox(dataframe)
+            BC_transform = round(pd.Series(BC_transform[0]), 2)
+            BY_transform = stats.yeojohnson(dataframe)
+            BY_transform = round(pd.Series(BY_transform[0]), 2)
+            df_skew_transform = pd.DataFrame({"origional_values": dataframe, "log":log_transform, "Box-Cox":BC_transform, "Yeo-Johnson":BY_transform})
+            return df_skew_transform
+    
 # %%
