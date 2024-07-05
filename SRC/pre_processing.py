@@ -225,30 +225,38 @@ class DataTransform:
             Tranformation (str):
                 Specifies the type of transformation: log, BC(Box-Cox) and YJ(Yeo-Johnson).
         """
-        
+        data = dataframe.to_numpy()
 
         if transformation == "log":
-            log_transform = dataframe.apply(np.log, axis=1)
+            log_transform = pd.DataFrame({"log":np.log(data)})
             return log_transform
-        
 
-        elif transformation == "BC":
-            BC_transform = stats.boxcox(dataframe)
-            BC_transform = round(pd.Series(BC_transform[0]), 2)
+        elif transformation == "BC" :
+            BC_transform = stats.boxcox(data)
+            BC_transform = pd.DataFrame({"Box-Cox":BC_transform[0]})
             return BC_transform
-    
+
         elif transformation == "YJ":
-            BY_transform = stats.yeojohnson(dataframe)
-            BY_transform = round(pd.Series(BY_transform[0]))
+            BY_transform = stats.yeojohnson(data)
+            BY_transform = pd.DataFrame({"Yeo-Johnson":BY_transform[0]})
             return BY_transform 
         
-        elif transformation == "all":
-            log_transform = dataframe.apply(np.log, axis=1)
-            BC_transform = stats.boxcox(dataframe)
-            BC_transform = round(pd.Series(BC_transform[0]), 2)
-            BY_transform = stats.yeojohnson(dataframe)
-            BY_transform = round(pd.Series(BY_transform[0]), 2)
-            df_skew_transform = pd.DataFrame({"origional_values": dataframe, "log":log_transform, "Box-Cox":BC_transform, "Yeo-Johnson":BY_transform})
-            return df_skew_transform
+        #elif transformation == "all" and not data.any():
+            
+            #log_transform = np.log(data)
+            #BC_transform = stats.boxcox(data)
+            #BC_transform = pd.Series(BC_transform[0])
+            #BY_transform = stats.yeojohnson(data)
+            #BY_transform = pd.Series(BY_transform[0])
+            #df_skew_transform = pd.DataFrame({"origional_values": data, "log":log_transform, "Box-Cox":BC_transform, "Yeo-Johnson":BY_transform})
+            #return df_skew_transform
+        
+        #elif transformation == "all" and np.any(data >= 0):
+            #log_transform = np.log(data)
+            #BY_transform = stats.yeojohnson(data)
+            #BY_transform = pd.Series(BY_transform[0])
+            #df_skew_transform = pd.DataFrame({"origional_values": data, "log":log_transform, "Yeo-Johnson":BY_transform})
+            #return df_skew_transform
+
     
-# %%
+    # %%
