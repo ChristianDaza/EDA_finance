@@ -169,7 +169,7 @@ class DataFrameInfo:
         # Calculate skewness for all numeric and date type column in the dataframe
         if len(columns) == 0:
             for column in self.dataframe:
-                if self.dataframe[column].dtypes == "float64" or  self.dataframe[column].dtypes == "int64" or self.dataframe[columns].dtypes == '<M8[ns]':
+                if self.dataframe[column].dtype == "float64" or self.dataframe[column].dtype == "int64":
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= 0.5:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
@@ -178,7 +178,7 @@ class DataFrameInfo:
         # Calculate skewness only for the specified column or columns
         if len(columns) > 0:
             for column in columns:
-                if self.dataframe[column].dtypes == "float64" or  self.dataframe[column].dtypes == "int64" or self.dataframe[columns].dtypes == '<M8[ns]':
+                if self.dataframe[column].dtype == "float64" or  self.dataframe[column].dtype == "int64":
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= cutoff:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
