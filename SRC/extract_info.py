@@ -236,8 +236,8 @@ class DataFrameInfo:
 
             # Idetifying outliers
             outliers = dataframe[(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
-            return outliers
-            
+            return dataframe
+ 
         else:
             dataframe= pd.DataFrame(self.dataframe[column])
             Q1 = dataframe[column].quantile(0.25)
