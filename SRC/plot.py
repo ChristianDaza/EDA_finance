@@ -87,3 +87,33 @@ class  Plotter:
         """
         qqplot(dataframe[column], scale=scale_option ,line='q')
         pyplot.show()
+
+
+    def box_plot(self, column, title ="", xlabel="", color= "deepskyblue"):
+        """
+        This function:
+            Creates a histogram from provided data.
+
+        Prameters:
+            Dataframe (df):
+                Where the desired data is store.
+            Column (str):
+                Name of the dataframe column to create the boxplot from.
+            title (str):
+                Title of the boxplot.
+            xlabel (str):
+                Name of the x-axis
+            color (string):
+                Name of the color that will be used for the inside of the boxplot and the outline of the outliers.
+        """
+        # Customise outliers aesthetics
+        flierprops = dict(marker='o', markerfacecolor='None', markeredgecolor=color)
+
+        plt.figure(figsize=(10, 5))
+        sns.boxplot(x = self.dataframe[column], 
+                    color=color,
+                    flierprops= flierprops)
+        plt.title(title)        
+        plt.xlabel(xlabel)
+        plt.grid(True, axis="x") 
+        plt.show()
