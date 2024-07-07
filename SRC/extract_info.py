@@ -1,5 +1,6 @@
 #%%
 import pandas as pd 
+import numpy as np
 from scipy.stats import normaltest
 # %%
 class DataFrameInfo:
@@ -29,7 +30,11 @@ class DataFrameInfo:
         Calculates the the normality statistic for a chosen column.
     skew_check:
         Calculates the skewness for all numeric and date type columns in the chosen dataframe.
+    z_score:
+        Calculates the Z_cores for a specify column of a dataframe and filters them
 
+    IQR_filter_outliers:
+        Returns outlier values of a selected column based on the interquartile range.
     """
 
     def __init__(self, dataframe):
@@ -182,6 +187,72 @@ class DataFrameInfo:
                     column_skewness = round(self.dataframe[column].skew(), 2)
                     if column_skewness >= cutoff:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
+
+
+    def z_score(self, column, cutoff = 2, filter=False):
+        """"
+        This function:
+            Calculates the Z_cores for a specify column of a dataframe and filters them.
+
+        Prameters:
+            Dataframe (df):
+                Dataframe which store the desire data.
+            Columns (str):
+                Name of the column with the values taht will be use to calculate the Z_scores.
+            filter (str):
+                Filters the z_values based on the cutoff provided by the user, inclusive.
+        """
+        dataframe= pd.DataFrame(self.dataframe[column])
+        mean = np.mean(dataframe[column])
+        stde = np.std(dataframe[column])
+        z_scores = pd.DataFrame({"z_score":(dataframe[column] - mean)})
+        dataframe["z_scores"] = z_scores
+        if filter == False:
+            return dataframe
+        elif filter == True:
+            return dataframe[dataframe["z_scores"] >= cutoff]
+        
+    def IQR_filter_outliers(self, column, dataframe = pd.DataFrame()):
+        """"
+        This function:
+            Returns outlier values of a selected column based on the interquartile range.
+
+        Prameters:
+            Dataframe (df):
+                Dataframe which store the desire data. Only use if the dataframe has the calculated z_scores column for the same column, which the user is going to use for this method.
+            Columns (str):
+                Name of the column with the values that will be use to calculate the Z_scores.
+        """
+        if dataframe.get("z_scores") is not None:
+            Q1 = dataframe[column].quantile(0.25)
+            Q3 = dataframe[column].quantile(0.75)
+
+            # Calculate Interquantile range
+            IQR = Q3 - Q1
+
+            print(f"Q1 (25th percentile): {Q1}")
+            print(f"Q3 (75th percentile): {Q3}")
+            print(f"IQR: {IQR}")
+
+            # Idetifying outliers
+            outliers = dataframe[(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
+            return outliers
+            
+        else:
+            dataframe= pd.DataFrame(self.dataframe[column])
+            Q1 = dataframe[column].quantile(0.25)
+            Q3 = dataframe[column].quantile(0.75)
+
+            # Calculate Interquantile range
+            IQR = Q3 - Q1
+
+            print(f"Q1 (25th percentile): {Q1}")
+            print(f"Q3 (75th percentile): {Q3}")
+            print(f"IQR: {IQR}")
+
+            # Idetifying outliers
+            outliers = dataframe[column] [(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
+            return outliers
 
    
 
