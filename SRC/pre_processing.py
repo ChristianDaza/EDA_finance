@@ -257,6 +257,18 @@ class DataTransform:
             #BY_transform = pd.Series(BY_transform[0])
             #df_skew_transform = pd.DataFrame({"origional_values": data, "log":log_transform, "Yeo-Johnson":BY_transform})
             #return df_skew_transform
+    def remove_outlier(self, outlier_delete_index):
+        """    
+        This function:
+                Deletes rows from the selected dataframe based on a list of indeces provide by the user.
 
+        Prameters:
+            outlier_delete_index (list):
+                List of row indices to be deleted.
+            Dataframe_column (df):
+                Dataframe wich contains the outliers to remove.
+        """
+        self.dataframe.drop(outlier_delete_index, inplace=True)
+        return self.dataframe
     
     # %%

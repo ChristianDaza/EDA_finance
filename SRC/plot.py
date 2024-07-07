@@ -89,7 +89,7 @@ class  Plotter:
         pyplot.show()
 
 
-    def box_plot(self, column, title ="", xlabel="", color= "deepskyblue"):
+    def box_plot(self, dataframe, column, title ="", xlabel="", color= "deepskyblue"):
         """
         This function:
             Creates a histogram from provided data.
@@ -110,7 +110,7 @@ class  Plotter:
         flierprops = dict(marker='o', markerfacecolor='None', markeredgecolor=color)
 
         plt.figure(figsize=(10, 5))
-        sns.boxplot(x = self.dataframe[column], 
+        sns.boxplot(x = dataframe[column], 
                     color=color,
                     flierprops= flierprops)
         plt.title(title)        

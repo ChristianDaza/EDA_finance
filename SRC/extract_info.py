@@ -189,7 +189,7 @@ class DataFrameInfo:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
 
 
-    def z_score(self, column, cutoff = 2, filter=False):
+    def z_score(self, dataframe, column, cutoff = 2, filter=False):
         """"
         This function:
             Calculates the Z_cores for a specify column of a dataframe and filters them.
@@ -202,7 +202,7 @@ class DataFrameInfo:
             filter (str):
                 Filters the z_values based on the cutoff provided by the user, inclusive.
         """
-        dataframe= pd.DataFrame(self.dataframe[column])
+        dataframe= pd.DataFrame(dataframe[column])
         mean = np.mean(dataframe[column])
         stde = np.std(dataframe[column])
         z_scores = pd.DataFrame({"z_score":(dataframe[column] - mean)})
@@ -236,10 +236,10 @@ class DataFrameInfo:
 
             # Idetifying outliers
             outliers = dataframe[(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
-            return dataframe
+            return outliers
  
         else:
-            dataframe= pd.DataFrame(self.dataframe[column])
+            dataframe= pd.DataFrame(dataframe[column])
             Q1 = dataframe[column].quantile(0.25)
             Q3 = dataframe[column].quantile(0.75)
 
@@ -251,7 +251,7 @@ class DataFrameInfo:
             print(f"IQR: {IQR}")
 
             # Idetifying outliers
-            outliers = dataframe[column] [(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
+            outliers = dataframe[(dataframe[column] < (Q1 - 1.5 * IQR)) | (dataframe[column] > (Q3 + 1.5 * IQR))]
             return outliers
 
    
