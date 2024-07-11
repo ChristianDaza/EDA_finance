@@ -186,7 +186,7 @@ class DataTransform:
                 Dataframe with the column name chnaged.
         """
 
-        self.dataframe.rename(column = {old_column_name:new_column_name}, inplace = True)
+        self.dataframe.rename(columns = {old_column_name:new_column_name}, inplace = True)
         return self.dataframe
     
     def replace_null(self, column, value):
@@ -233,7 +233,7 @@ class DataTransform:
         self.dataframe = self.dataframe.drop(columns, axis = 1)
         return self.dataframe 
     
-    def skew_transform(self, transformation):
+    def skew_transform(self, dataframe=pd.DataFrame(), transformation = ""):
         """
         This function:
             Transformed skew data distribution.
@@ -245,7 +245,7 @@ class DataTransform:
             Tranformation (str):
                 Specifies the type of transformation: log, BC(Box-Cox) and YJ(Yeo-Johnson).
         """
-        data = self.dataframe.to_numpy()
+        data = dataframe.to_numpy()
 
         # Log transformation
         if transformation == "log":

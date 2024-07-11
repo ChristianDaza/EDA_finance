@@ -14,7 +14,7 @@ class DataFrameInfo:
 
     Attributes:
         dataframe (df): 
-            Dataframe to extract information from..
+            Dataframe to extract information from.
 
     Methods:
         check_columns_type:
@@ -60,7 +60,7 @@ class DataFrameInfo:
                 Panda series displaying the column names and their corresponding data types.
         """
 
-        columns_types = self.dataframe.dtypes()
+        columns_types = self.dataframe.dtypes
         return columns_types
     
     def descriptive_stats(self, selected_column = [], exclude_columns = []):
@@ -202,7 +202,7 @@ class DataFrameInfo:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
 
 
-    def z_score(self, column, cutoff = 2, filter=False):
+    def z_score(self, dataframe, column, cutoff = 2, filter=False):
         """"
         This function:
              Calculates the Z_cores for a specify column of a dataframe and can filter based on specified cutoff value.
@@ -216,7 +216,7 @@ class DataFrameInfo:
             dataframe (df):
                 Dataframe with z_score values or filtered dataframe based on the provided cutoff value.
         """
-        dataframe= pd.DataFrame(self.dataframe[column])
+        dataframe= pd.DataFrame(dataframe[column])
         mean = np.mean(dataframe[column])
         stde = np.std(dataframe[column])
         z_scores = pd.DataFrame({"z_score":(dataframe[column] - mean)})
