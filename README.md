@@ -28,42 +28,35 @@ git clone https://github.com/ChristianDaza/EDA_finance.git
 
 ## Usage
 
-Once cloned, use the command line to navigate to the repository. Then move to the SRC folder and open the EDA.ipynb notebook and Analysis.ipynb.
+Once cloned, use the command line to navigate to the repository. This project is divided into two jupiter notebooks in the SRC folder: EDA.ipynb and Analysis.ipynb. First run the cells in EDA.ipynb and then Analysis.ipynb beacuse the analysis notebook relays on the cleaned datafrom the EDA notebook.
 
-The EDA.ipynb notebook relays on:
-- db.utils.py (class RDSDatabaseConnector) to extract and save the SQL data store in AWS.
-- pre_processing.py (class DataTransform) to alter columns and values of the dataframe.
-- extract_info.py (class DataFrameInfo) helps to undertand the data such as the shape of the dataframe, missing values, skewness, descriptic statistics and outliers.
-- plot.py (class Plotter) allows the user to create visualisations for the data based on the seaborn Python library.
-
-Also, this notebook is broken into two main sections:
-
+The EDA.ipynb (Exploratory data analys), which is broken into sections:
 Database: 
-- Extracting and saving the finance data form AWSRDS.
+- Extracting and saving the finance data form AWS RDS.
 
 Preprocessing: 
--  Cirrecting data types: convert the columns into their correct data type
+- Correcting data types: convert the columns into their correct data type
 - missing values: remove and impute missing values
-- Skewness: cpply transformations on skewed columns
-- Outliers: remove outliers
-- Correlation: remove overly correlated columns
+- Skewness: check for skewness and apply transformations correct it.
+- Outliers: detect and remove outliers
+- Correlation: detect and remove overly correlated columns
 
-After removing and imputing values the dataframe was saved (impute_loan_payments) and used for the remainign three tasks in the precossing section, since skew transformations will alter the original value of the data which will then affect interpretation in the analysis section.
+After removing and imputing values the dataframe was saved (impute_loan_payments) for the analysis section, since skew transformations will alter the original value of the data which will then affect interpretation.
 
 The Analysis.ipynb has four sections:
-- Calculating the current state of the loan
-- Calculating loss
-- Calculating possible loss
-- Indicators of loss
-
-
+- Calculating the current state of the loans: how much money from the loans had been recovered and hwo much will the company expect to gain in the next 6 months
+- Calculating loss: the revenue lost from loans that had been charged off
+- Calculating possible loss: the possible revenue loss if the loans with late status will become charged off loans.
+- Indicators of loss: analysis which columns in the dataframe can predict if a late loan will become a charged off loan.
 
 
 ## Main Featues
 
-- Have classes for extracting data from the cloud, transforming, extracting information and visualisation of data.
-
-    
+-  Class RDSDatabaseConnector (db.utils.py) extracts and save the SQL data store in AWS.
+-  Class RDSDatabaseConnector (db.utils.py) displays all the tables in the cloud database and allow the user to chose wich one will be download.
+-  Class DataTransform (pre_processing.py) transforms columns and values of the dataframe.
+-  Class DataFrameInfo (extract_info.py) helps to undertand the data such as the shape of the dataframe, missing values, skewness, descriptic statistics and outliers.
+-  Class Plotter (plot.py) allows the user to create visualisations for the data based on the seaborn Python library.
 
 ## Licence
 [MIT](https://github.com/ChristianDaza/Hangman/blob/main/LICENSE)
