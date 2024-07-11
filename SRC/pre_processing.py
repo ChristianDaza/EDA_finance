@@ -70,7 +70,6 @@ class DataTransform:
 
         for column in columns:
             self.dataframe[column] = self.dataframe[column].astype("category")
-
         return self.dataframe
     
     def date_transform(self, columns):
@@ -89,7 +88,6 @@ class DataTransform:
 
         for column in columns:
             self.dataframe[column]= self.dataframe[column].apply(pd.to_datetime) 
-
         return self.dataframe
     
     def date_format(self, columns, format):
@@ -130,7 +128,6 @@ class DataTransform:
 
         for column in columns:
             self.dataframe[column] = self.dataframe[column].astype("string")
-
         return self.dataframe
     
     def remove_characters(self, column, characters):
@@ -152,7 +149,6 @@ class DataTransform:
         
         for character in characters:
             self.dataframe[column] = self.dataframe[column].str.replace(character, "")
-            
         return self.dataframe
     
     def numeric_transform(self, columns):
@@ -171,7 +167,6 @@ class DataTransform:
         
         for column in columns:
             self.dataframe[column] = pd.to_numeric(self.dataframe[column])
-
         return self.dataframe
         
     def rename_column(self, old_column_name, new_column_name):
@@ -190,8 +185,8 @@ class DataTransform:
             dataframe (df):
                 Dataframe with the column name chnaged.
         """
-        self.dataframe.rename(column = {old_column_name:new_column_name}, inplace = True)
 
+        self.dataframe.rename(column = {old_column_name:new_column_name}, inplace = True)
         return self.dataframe
     
     def replace_null(self, column, value):
@@ -236,7 +231,6 @@ class DataTransform:
 
         # Remove columns
         self.dataframe = self.dataframe.drop(columns, axis = 1)
-
         return self.dataframe 
     
     def skew_transform(self, transformation):
@@ -286,6 +280,5 @@ class DataTransform:
         """
 
         self.dataframe.drop(outlier_delete_index, inplace=True)
-
         return self.dataframe
 

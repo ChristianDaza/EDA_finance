@@ -1,40 +1,48 @@
-#%%
-import pandas as pd 
+# Imports
 import numpy as np
+import pandas as pd 
 from scipy.stats import normaltest
-# %%
+
+# Class
 class DataFrameInfo:
     """ 
-    Allows the user to extrcat useful information from the dataframe.
+    Allows the user to extract useful information from the dataframe.
     
     Parameters:
         dataframe (df): 
-            Dataframe which the users need to transform.
+            Dataframe to extract information from.
 
     Attributes:
         dataframe (df): 
-            Dataframe which the users need to transform..
+            Dataframe to extract information from..
 
     Methods:
-    check_columns_type:
-        Checks and displays the data types of all the columns of a specified dataframe.
-    descriptive_stats:
-         Calculates the mean, median and standard deviation of datafraem columns wiht data type float64 or int64.
-    unique_valus_count:
-        Displays the total number of unqiues values and the count of each unique values within categorical data type columns.
-    data_shape:
-        Displays the number of rows and columsn of a dataframe.
-    count_null:
-        Calculates the number or percentage of nulls for each column of the dataframe.
-    norm_test:
-        Calculates the the normality statistic for a chosen column.
-    skew_check:
-        Calculates the skewness for all numeric and date type columns in the chosen dataframe.
-    z_score:
-        Calculates the Z_cores for a specify column of a dataframe and filters them
+        check_columns_type:
+            Checks and displays the data types of all the columns of in a dataframe.
 
-    IQR_filter_outliers:
-        Returns outlier values of a selected column based on the interquartile range.
+        descriptive_stats:
+            Calculates the mean, median and standard deviation for a column or columns with data type float64 or int64.
+
+        unique_valus_count:
+            Displays the total number of unique values and their counts within categorical data type columns.
+
+        data_shape:
+            Displays the number of rows and columns of a dataframe.
+
+        count_null:
+            Calculates the number or percentage of nulls for each column of the dataframe.
+
+        norm_test:
+            Calculates the the normality statistic for a chosen column.
+
+        skew_check:
+            Calculates the skewness for all numeric and date type columns in the chosen dataframe.
+
+        z_score:
+            Calculates the Z_cores for a specify column of a dataframe and can filter based on specified cutoff value.
+
+        IQR_filter_outliers:
+            Returns outlier values of a selected column based on the interquartile range.
     """
 
     def __init__(self, dataframe):
@@ -44,30 +52,29 @@ class DataFrameInfo:
     def check_columns_type(self):
         """
         This function:
-            Checks and displays the data types of all the columns of a specified dataframe.
+            Checks and displays the data types of all the columns of a dataframe.
 
-        Prameters:
-            dataframe(df): 
-                Dataframe that the user wants the columns' data types to be checked.
 
         Returns: 
             dataframe (series):
-                Panda series displaying the column names and their corresponding datatypes for the specified dataframe.
+                Panda series displaying the column names and their corresponding data types.
         """
-        columns_types = self.dataframe.dtypes
+
+        columns_types = self.dataframe.dtypes()
         return columns_types
     
     def descriptive_stats(self, selected_column = [], exclude_columns = []):
         """
         This function:
-            Calculates the mean, median and standard deviation of datafraem columns wiht data type float64 or int64.
-            It also allows the user to eliminate dataframe columsn before the descriptive statistics are run.
+            Calculates the mean, median and standard deviation of a column or columns wiht data type float64 or int64.
+            It also allows the user to eliminate dataframe columns before the descriptive statistics are run.
 
         Prameters:
             exclude_columns (list):
-                List of column names the user want to remove before runnign the descriptive statistics.
+                List of column name or names to remove before running the descriptive statistics.
+
             selected_column (list):
-                List of column names the user want to get the descriptive statistics from.
+                List of column name or names to calculate the descriptive statistics from.
         """
         if len(exclude_columns) > 0:
             # Delete undesired columns
@@ -82,6 +89,7 @@ class DataFrameInfo:
                     standard_deviation = df_clean[column].std()
                     print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation:{standard_deviation}")
         
+        # If not exclude columns or columns are specified, run for all dataframe columns
         elif len(exclude_columns) == 0 and len(selected_column) == 0:
                 # Compute descriptive statistics
                 for column in self.dataframe:
@@ -91,6 +99,7 @@ class DataFrameInfo:
                         standard_deviation = self.dataframe[column].std()
                         print(f"\n \n{column}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
         
+        # if columns are specified run descriptive stats just for them
         elif len(exclude_columns) == 0 and len(selected_column) > 0:
                 for columns in selected_column:
                     if self.dataframe[columns].dtype == "float64" or self.dataframe[columns].dtype == "int64" or self.dataframe[columns].dtype == '<M8[ns]':
@@ -99,12 +108,10 @@ class DataFrameInfo:
                         standard_deviation = self.dataframe[columns].std()
                         print(f"\n \n{columns}: \n mean:{mean}  \n median:{median} \n standard_deviation: {standard_deviation}")
         
-
-            
     def unique_valus_count(self):
         """
         This function:
-                Displays the total number of unqiues values and the count of each unique values within categorical data type columns.
+                Displays the total number of unique values and their counts within categorical data type columns.
         """
         for column in self.dataframe:
             if self.dataframe[column].dtype == "category":
@@ -117,7 +124,9 @@ class DataFrameInfo:
         This function:
                     Displays the number of rows and columsn of a dataframe.
         """
+        
         d_shape = self.dataframe.shape
+
         print(f"Rows: {d_shape[0]} \nColumns: {d_shape[1]}")
 
     def count_null(self, percentage = False, individual_total = False):
@@ -127,9 +136,10 @@ class DataFrameInfo:
 
         Prameters:
             percentage (str):
-                If the paremeter value is "True" calculates percentage of nulls in each column of the dataframe based on the lenght of the dataframe.
+                If the paremeter value is "True" calculates percentage of nulls in each column of the dataframe based on the total number of fata points of the dataframe.
+
             individual_total:
-                Allows the percentage of nulls per column to be calculated based on the lenght of each column.
+                Allows the percentage of nulls to be calculated per total values for their corresponding column.
         """
 
         if percentage == True:
@@ -149,12 +159,14 @@ class DataFrameInfo:
         """
         This function:
             Calculates the the normality statistic for a chosen column.
+            A exclude column parameter will be implemented in the future to skip numeric column such as ID columns.
 
         Prameters:
             Columns(str):
                 Name of the column to test for normality.
             
         """
+
         data = self.dataframe[column]
         stat, p = normaltest(data, nan_policy='omit')
         print('Statistics=%.3f, p=%.3f' % (stat, p))
@@ -166,7 +178,8 @@ class DataFrameInfo:
 
         Prameters:
             Columns(list):
-                List of column or columns to be checked for skewness.
+                List of column or columns names to be checked for skewness.
+
             cutoff(int):
                 Only values bigger than or equal to cuttoff will be return.
         """
@@ -189,20 +202,21 @@ class DataFrameInfo:
                         print(f"\n {column}: \n skewness:{column_skewness} \n")
 
 
-    def z_score(self, dataframe, column, cutoff = 2, filter=False):
+    def z_score(self, column, cutoff = 2, filter=False):
         """"
         This function:
-            Calculates the Z_cores for a specify column of a dataframe and filters them.
+             Calculates the Z_cores for a specify column of a dataframe and can filter based on specified cutoff value.
 
         Prameters:
-            Dataframe (df):
-                Dataframe which store the desire data.
             Columns (str):
                 Name of the column with the values taht will be use to calculate the Z_scores.
             filter (str):
                 Filters the z_values based on the cutoff provided by the user, inclusive.
+        Returns:
+            dataframe (df):
+                Dataframe with z_score values or filtered dataframe based on the provided cutoff value.
         """
-        dataframe= pd.DataFrame(dataframe[column])
+        dataframe= pd.DataFrame(self.dataframe[column])
         mean = np.mean(dataframe[column])
         stde = np.std(dataframe[column])
         z_scores = pd.DataFrame({"z_score":(dataframe[column] - mean)})
@@ -215,13 +229,15 @@ class DataFrameInfo:
     def IQR_filter_outliers(self, column, dataframe = pd.DataFrame()):
         """"
         This function:
-            Returns outlier values of a selected column based on the interquartile range.
+             Display outlier values of a selected column based on the calculation on the interquartile range of that column.
+
 
         Prameters:
             Dataframe (df):
-                Dataframe which store the desire data. Only use if the dataframe has the calculated z_scores column for the same column, which the user is going to use for this method.
+                Dataframe with the data to check for outliers. Only use if the dataframe has the calculated z_scores column for the same column, which the user is going to use for this method.
+                
             Columns (str):
-                Name of the column with the values that will be use to calculate the Z_scores.
+                Name of the column with the values that will be use to calculate, which values are classified as outliers.
         """
         if dataframe.get("z_scores") is not None:
             Q1 = dataframe[column].quantile(0.25)

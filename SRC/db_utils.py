@@ -83,7 +83,6 @@ class RDSDatabaseConnector:
 
             # Print all tables stored in the database
             print(f"The connected database has the following tables: {insp.get_table_names()}")
-
             return engine.connect()
     
     def extract_data(self):
@@ -103,7 +102,6 @@ class RDSDatabaseConnector:
 
         # Transform table in SQL
         df = pd.read_sql(table_name, engine_connect)
-
         return df
     
     def save_data(self):
@@ -136,5 +134,4 @@ class RDSDatabaseConnector:
 
       # Loads data as dataframe
       df = pd.read_csv(data_file_path)
-
       return df 
