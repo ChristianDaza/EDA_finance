@@ -4,23 +4,28 @@ from sqlalchemy import create_engine
 from sqlalchemy import inspect
 import yaml
 
-# Class
+# Read database credentials
 def read_credentials(db_credentials_file_yaml):
     """
     This function:
-        Reads a yaml file with credentials to connect to a database and returns them as a dictionary.
+        Reads a yaml file with credentials to connect to a database and returns them as a Python dictionary.
+
     Prameters:
         db_credentials_file (str): 
-            Path to the yaml file with the credentilas to connact to a data base.
+            Path to the yaml file with the credentials to connect to a data base.
+
     Returns: 
         Credentials_dict (dict):
-            Python dictionary that contains the credentails to connact to a data base.
+            Python dictionary that contains the credentials to connact to a data base.
     """
-    
+    # Open and reads yaml file
     with open(db_credentials_file_yaml) as file:
         credentials_dict = yaml.safe_load(file)
+
+    # Return yaml file data as a Python dictionary
     return credentials_dict
-#%%
+
+# Class
 class RDSDatabaseConnector:
     """ 
     Class that allow you to connect, select, save and load data from the Amazon Relational Database Service (RDS).
@@ -131,5 +136,5 @@ class RDSDatabaseConnector:
 
       # Loads data as dataframe
       df = pd.read_csv(data_file_path)
-      
+
       return df 
