@@ -41,7 +41,11 @@ class RDSDatabaseConnector:
 
     Methods:
         db_connect():
+            Connects to the cloud database.
+
+        table_check():
             Connects to the cloud database and prints the names of all the tables stored.
+
 
         extract_data():
             Allows the user to extract a specified table from the database.
@@ -76,14 +80,39 @@ class RDSDatabaseConnector:
             
             # Setting up engine
             engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
+
+            # Connect to database
+            engine.connect()
+
+            return engine.connect()
+    
+    def table_check(self):
+            """
+            This function:
+            Connects to the cloud database and prints the names of all the tables stored.
+            
+            Work in progress: if execute the kernel will raise crashed when executing the save_data() mehtod
+            """
+            # Connection credentials
+            DATABASE_TYPE = 'postgresql'
+            DBAPI = 'psycopg2'
+            ENDPOINT = self.credentials['RDS_HOST']
+            USER = self.credentials['RDS_USER']
+            PASSWORD = self.credentials['RDS_PASSWORD']
+            PORT = self.credentials['RDS_PORT']
+            DATABASE = self.credentials['RDS_DATABASE']
+            
+            # Setting up engine
+            engine = create_engine(f"{DATABASE_TYPE}+{DBAPI}://{USER}:{PASSWORD}@{ENDPOINT}:{PORT}/{DATABASE}")
             engine.connect()
 
             # Get the names of the tables store
             insp = inspect(engine)
-
-            # Print all tables stored in the database
+            
+            # Print tables in the database
             print(f"The connected database has the following tables: {insp.get_table_names()}")
-            return engine.connect()
+
+
     
     def extract_data(self):
         """
